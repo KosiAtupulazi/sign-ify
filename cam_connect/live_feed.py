@@ -4,11 +4,13 @@ from cvzone.ClassificationModule import Classifier
 import numpy as np 
 import math
 
-cap = cv2.VideoCapture(1) 
+cap = cv2.VideoCapture(0) 
 detector = HandDetector(maxHands=1) 
 offset = 20
 imgSize = 300
-labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"]
+labels = ["A", "B", "E", "F", "K", "L", "R"]
+previousIndex = 0
+word = ""
 
 categorizer = Classifier(r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\model_files\keras_model.h5', r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\model_files\labels.txt')
 
@@ -37,7 +39,7 @@ while True:
             wGap = math.ceil((imgSize - wCal) / 2)
             imgWhite[:, wGap:wCal + wGap] = imgResize
             prediction, index = categorizer.getPrediction(imgWhite, draw=False)
-            print(labels[index]) # see output real time
+            #print(labels[index]) # see output real time
         else:
             k = imgSize / w
             hCal = math.ceil(k * h)
@@ -46,14 +48,22 @@ while True:
             imgWhite[hGap:hCal + hGap, :] = imgResize
             prediction, index = categorizer.getPrediction(imgWhite, draw=False)
 
-        cv2.rectangle(imgOut, (x - offset, y - offset-50), (x - offset+90, y - offset-50+50), (255, 0, 255), cv2.FILLED)
-        cv2.putText(imgOut, labels[index], (x, y -26), cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
+        cv2.putText(imgOut, labels[index], (x, y -26), cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 0, 255), 2)
         cv2.rectangle(imgOut, (x-offset, y-offset), (x + w+offset, y + h+offset), (255, 0, 255), 4)
+
+        if index != previousIndex:
+            word += labels[index]
+            previousIndex = index
+        cv2.putText(imgOut, word, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        if key == ord("a"):
+            word = ""
+
+
         
         cv2.imshow("ImageCrop", imgCrop) 
         cv2.imshow("ImageWhite", imgWhite)
     
-        cv2.imshow("Image", img)
+        cv2.imshow("Image", imgOut)
 
     key = cv2.waitKey(1)
     if key == ord("q"):
