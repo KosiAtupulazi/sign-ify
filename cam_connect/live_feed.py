@@ -9,10 +9,10 @@ cap = cv2.VideoCapture(0)
 detector = HandDetector(maxHands=1) 
 offset = 20
 imgSize = 300
-labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"]
 
 
-categorizer = Classifier("Model/keras_model.h5", "Model/labels.txt")
+categorizer = Classifier("model_files/keras_model.h5", "model_files/labels.txt")
 
 folder = r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\cam_connect\Data\E'
 counter = 0
