@@ -9,7 +9,7 @@ detector = HandDetector(maxHands=1)
 offset = 20
 imgSize = 300
 
-folder = "Data/C" 
+folder = r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\cam_connect\Data\E'
 counter = 0
 
 while True:
