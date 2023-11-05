@@ -3,25 +3,23 @@ from cvzone.HandTrackingModule import HandDetector
 from cvzone.ClassificationModule import Classifier
 import numpy as np 
 import math
-import time
 
-cap = cv2.VideoCapture(0) 
+cap = cv2.VideoCapture(1) 
 detector = HandDetector(maxHands=1) 
 offset = 20
 imgSize = 300
 labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"]
 
+categorizer = Classifier(r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\model_files\keras_model.h5', r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\model_files\labels.txt')
 
-categorizer = Classifier("model_files/keras_model.h5", "model_files/labels.txt")
-
-folder = r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\cam_connect\Data\E'
 counter = 0
 
 while True:
-    success, img = cap.read()
+    ret, frame = cap.read()
+    cv2.imshow('Webcam Feed', frame)
 
-    imgOut = img.copy()
-    hands, img = detector.findHands(img) 
+    imgOut = frame.copy()
+    hands, img = detector.findHands(frame) 
 
     if hands:
         hand = hands[0] 
@@ -36,21 +34,30 @@ while True:
             k = imgSize / h
             wCal = math.ceil(k * w)
             imgResize = cv2.resize(imgCrop, (wCal, imgSize))
-            imgResizeShape = imgResize.shape
             wGap = math.ceil((imgSize - wCal) / 2)
             imgWhite[:, wGap:wCal + wGap] = imgResize
-            prediction, index = categorizer.getPrediction(imgWhite, draw = False)
-            print(prediction, index) #see output real time
-
+            prediction, index = categorizer.getPrediction(imgWhite, draw=False)
+            print(labels[index]) # see output real time
         else:
             k = imgSize / w
             hCal = math.ceil(k * h)
             imgResize = cv2.resize(imgCrop, (imgSize, hCal))
-            imgResizeShape = imgResize.shape
             hGap = math.ceil((imgSize - hCal) / 2)
             imgWhite[hGap:hCal + hGap, :] = imgResize
-            prediction, index = categorizer.getPrediction(imgWhite, draw = False)
+            prediction, index = categorizer.getPrediction(imgWhite, draw=False)
 
         cv2.rectangle(imgOut, (x - offset, y - offset-50), (x - offset+90, y - offset-50+50), (255, 0, 255), cv2.FILLED)
         cv2.putText(imgOut, labels[index], (x, y -26), cv2.FONT_HERSHEY_COMPLEX, 1.7, (255, 255, 255), 2)
         cv2.rectangle(imgOut, (x-offset, y-offset), (x + w+offset, y + h+offset), (255, 0, 255), 4)
+        
+        cv2.imshow("ImageCrop", imgCrop) 
+        cv2.imshow("ImageWhite", imgWhite)
+    
+        cv2.imshow("Image", img)
+
+    key = cv2.waitKey(1)
+    if key == ord("q"):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
