@@ -1,0 +1,6 @@
+venv310/
+
+#    venv310\Scripts\activate
+# ^just that, should see (venv310) at the start of the command line
+#     deactivate
+# system will return to using the default (newer) Python version globally.
