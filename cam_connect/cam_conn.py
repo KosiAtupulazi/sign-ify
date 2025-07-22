@@ -2,7 +2,7 @@ import cv2
 import os
 
 # Define the path to your ASL dataset
-dataset_folder = "C:\Users\18324\Desktop\sign-ify_local\sign-ify-1"
+dataset_folder = "Data"
 
 # Get a list of subdirectories (each subdirectory represents a different ASL sign)
 sign_folders = os.listdir(dataset_folder)

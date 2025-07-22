@@ -3,13 +3,14 @@ from cvzone.HandTrackingModule import HandDetector
 import numpy as np 
 import math
 import time
+import os
 
 cap = cv2.VideoCapture(0) 
 detector = HandDetector(maxHands=1) 
 offset = 20
 imgSize = 300
 
-folder = r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\cam_connect\Data\A'
+folder = os.path.join("Data", "A")
 counter = 0
 
 while True:
