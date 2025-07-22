@@ -3,6 +3,7 @@ from cvzone.HandTrackingModule import HandDetector
 from cvzone.ClassificationModule import Classifier
 import numpy as np 
 import math
+import os
 
 cap = cv2.VideoCapture(0) 
 detector = HandDetector(maxHands=1) 
@@ -12,7 +13,11 @@ labels = ["A", "B", "E", "F", "K", "L", "R"]
 previousIndex = 0
 word = ""
 
-categorizer = Classifier(r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\model_files\keras_model.h5', r'C:\Users\18324\Desktop\sign-ify_local\sign-ify-1\model_files\labels.txt')
+current_dir = os.path.dirname(__file__)
+model_path = os.path.abspath(os.path.join(current_dir, "..", "model_files", "keras_model.h5"))
+labels_path = os.path.abspath(os.path.join(current_dir, "..", "model_files", "labels.txt"))
+
+categorizer = Classifier(model_path, labels_path)
 
 counter = 0
 
