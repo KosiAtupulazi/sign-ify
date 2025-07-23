@@ -33,6 +33,7 @@ Sign-ify in action: The right window displays the full camera feed with hand det
 
 A comprehensive demonstration video, along with a detailed project description and technical breakdown, is available on our Devpost page. https://devpost.com/software/sign-ify-sb8tra 
 
+![alt text](image-2.png)
 
 ## Setup Instructions
 
