@@ -1,4 +1,6 @@
 venv310/
+venv38/
+model_files/keras_model_version_check.py
 
 #    venv310\Scripts\activate
 # ^just that, should see (venv310) at the start of the command line
